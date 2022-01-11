@@ -2,6 +2,7 @@ import assert from "assert";
 import Discord, {
 	ApplicationCommandData,
 	CacheType,
+	CommandInteraction,
 	Intents,
 	Interaction,
 } from "discord.js";
@@ -15,12 +16,12 @@ export interface Command {
 	CLIENT_ID?: string;
 	GUILD_ID: string;
 	COMMAND_INFO: ApplicationCommandData;
-	ON_INTERACTION: (cmd: Interaction<CacheType>) => {};
+	ON_INTERACTION: (cmd: Interaction<CacheType> & CommandInteraction ) => {};
 }
 
 export interface Event {
 	EVENT_NAME: string;
-	ON_FIRE: (args: any[]) => Discord.Awaitable<void>;
+	ON_FIRE: (args?: any[]) => Discord.Awaitable<void>;
 }
 
 assert(process.env.TOKEN, "Token not found!");
@@ -39,7 +40,9 @@ const CommandsInit = async () => {
 		const cmd = await import("./cmds/" + file.replace(".ts", ".js"));
 		const handle: Command = cmd.default;
 		commands.set(handle.COMMAND_INFO.name, handle);
-		Bot.application?.commands.create(handle.COMMAND_INFO, handle.GUILD_ID);
+		const cmdOut = await Bot.application?.commands.create(handle.COMMAND_INFO, handle.GUILD_ID);
+		console.log("Registered Command: ");
+		console.log(cmdOut);
 	});
 };
 
@@ -47,8 +50,12 @@ const EventsInit = async () => {
 	fs.readdirSync("./events/").forEach(async (file) => {
 		const cmd = await import("./events/" + file.replace(".ts", ".js"));
 		const handle: Event = cmd.default;
-		events.set(handle.EVENT_NAME, handle);
-		Bot.on(handle.EVENT_NAME, handle.ON_FIRE);
+		if (handle.EVENT_NAME != "ready") {
+			events.set(handle.EVENT_NAME, handle);
+			Bot.on(handle.EVENT_NAME, handle.ON_FIRE);
+		} else {
+			await handle.ON_FIRE();
+		}
 	});
 };
 
@@ -61,7 +68,9 @@ Bot.on("interactionCreate", async (interaction) => {
 	}
 });
 
+Bot.on("ready", async () => {
+	CommandsInit();
+	EventsInit();
+})
 
-CommandsInit();
-EventsInit();
 Bot.login(process.env.TOKEN);

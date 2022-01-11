@@ -9,7 +9,7 @@ const Ping = <Command>{
         type:"CHAT_INPUT",
 
     },
-    ON_INTERACTION!: (cmd : MessageComponentInteraction<CacheType>) => {
+    ON_INTERACTION!: (cmd) => {
         cmd.reply("hello!")
     }
     
