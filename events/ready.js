@@ -1,6 +1,6 @@
-import { Event } from "../bot";
 
-const Ready = <Event>{
+
+const Ready = {
 	EVENT_NAME: "ready",
 	ON_FIRE: () => {
 		console.log("Hello!");
