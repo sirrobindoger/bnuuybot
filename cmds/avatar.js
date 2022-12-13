@@ -1,16 +1,18 @@
-import { ApplicationCommandType } from "discord.js"
+import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js"
 
 const Avatar = {
-    GUILD_ID: process.env.GUILD_ID,
+    //GUILD_ID: process.env.GUILD_ID,
+    IS_DISABLED: true, 
     COMMAND_INFO: {
         name:"avatar",
         description: "It shows your or target user avatar",
+        type: ApplicationCommandType.ChatInput,
         options: [
             {
                 name: "user",
                 description: "The user",
-                type: ApplicationCommandType.User,
-                required: false
+                required: false,
+                type: ApplicationCommandOptionType.User
             }
         ]
 

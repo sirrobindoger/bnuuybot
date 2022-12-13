@@ -1,7 +1,7 @@
 import { ApplicationCommandType } from "discord.js";
 
 const Ping = {
-    GUILD_ID: process.env.GUILD_ID,
+    //GUILD_ID: process.env.GUILD_ID,
     COMMAND_INFO: {
         name:"ping",
         description: "It does a meme",

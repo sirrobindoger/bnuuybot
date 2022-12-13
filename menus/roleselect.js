@@ -3,12 +3,12 @@ import { ActionRowBuilder, StringSelectMenuBuilder } from "@discordjs/builders"
 const SelectMenu = {
     info: {
         name: "roleselect",
-        channel: "read-me",
+        channel: "rules-and-roles",
     },
     role_dict: {
-        "OS": ["os/Debian", "os/Ubuntu", "os/Arch", "os/nixOS", "os/macOS", "os/Windows10", "os/Windows11", "os/FreeBSD", "os/NetBSD"],
+        "OS": ["os/Debian", "os/Mint" ,"os/Pop!_OS" ,"os/Ubuntu", "os/Arch", "os/nixOS", "os/macOS", "os/Windows10", "os/Windows11", "os/FreeBSD", "os/NetBSD"],
         "Desktop Env": ["de/GNOME", "de/KDE", "de/XFCE", "de/Cinnamon"],
-        "System": ["sys/BSD", "sys/Linux", "sys/NT", "sys/XNU"],
+        "System": ["sys/BSD", "sys/Linux", "sys/NT", "sys/Darwin"],
     },
     buildMenu: (channel) => {
         const rows = [];

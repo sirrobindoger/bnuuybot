@@ -24,6 +24,8 @@ const CommandsInit = async () => {
 	fs.readdirSync("./cmds/").forEach(async (file) => {
 		const cmd = await import("./cmds/" + file);
 		const handle = cmd.default;
+		// if handle.IS_DISABLED is true, skip
+		if (handle.IS_DISABLED) return;
 		commands[handle.COMMAND_INFO.name] = handle;
 		const cmdOut = await Bot.application?.commands.create(handle.COMMAND_INFO, handle.GUILD_ID);
 		console.log("Registered Command: ");
@@ -50,12 +52,12 @@ const MenusInit = async () => {
 		const handle = cmd.default;
 		menus[handle.info.name] = handle;
 		// find channel by name
-		// const channel = Bot.channels.cache.find(c => c.name === handle.info.channel);
-		// const rows = handle.buildMenu(channel);
-		// // send message with select menu
-		// const msg = await channel.send({ content: "Select your roles", components: rows });
-		// console.log("Registered Menu: ");
-		// console.log(msg);
+		const channel = Bot.channels.cache.find(c => c.name === handle.info.channel);
+		const rows = handle.buildMenu(channel);
+		// send message with select menu
+		const msg = await channel.send({ content: "Select your roles", components: rows });
+		console.log("Registered Menu: ");
+		console.log(msg);
 	});
 };
 
