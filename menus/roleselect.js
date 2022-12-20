@@ -4,10 +4,11 @@ const SelectMenu = {
     info: {
         name: "roleselect",
         channel: "rules-and-roles",
+        message: "1053135399750467595",
     },
     role_dict: {
-        "OS": ["os/Debian", "os/Mint" ,"os/Pop!_OS" ,"os/Ubuntu", "os/Arch", "os/nixOS", "os/macOS", "os/Windows10", "os/Windows11", "os/FreeBSD", "os/NetBSD"],
-        "Desktop Env": ["de/GNOME", "de/KDE", "de/XFCE", "de/Cinnamon"],
+        "OS": ["os/Debian", "os/Mint" ,"os/Pop!_OS" , "os/Fedora","os/Ubuntu", "os/Arch", "os/nixOS", "os/macOS", "os/Windows10", "os/Windows11", "os/FreeBSD", "os/NetBSD"],
+        "Desktop Env": ["de/GNOME", "de/KDE", "de/XFCE", "de/CDE", "de/Cinnamon"],
         "System": ["sys/BSD", "sys/Linux", "sys/NT", "sys/Darwin"],
     },
     buildMenu: (channel) => {

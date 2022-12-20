@@ -16,7 +16,10 @@ const menus = {};
 export const Bot = new Discord.Client({
 	intents: [
 		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMessages
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildInvites,
+		GatewayIntentBits.GuildPresences,
 	],
 });
 
@@ -39,7 +42,13 @@ const EventsInit = async () => {
 		const handle = cmd.default;
 		if (handle.EVENT_NAME != "ready") {
 			events[handle.EVENT_NAME] = handle;
+			// check for handle.ON_REGISTER
+			if (handle.ON_REGISTER) {
+				await handle.ON_REGISTER();
+			}
 			Bot.on(handle.EVENT_NAME, handle.ON_FIRE);
+			console.log("Registered Event: ");
+			console.log(handle);
 		} else {
 			await handle.ON_FIRE();
 		}
@@ -54,8 +63,9 @@ const MenusInit = async () => {
 		// find channel by name
 		const channel = Bot.channels.cache.find(c => c.name === handle.info.channel);
 		const rows = handle.buildMenu(channel);
-		// send message with select menu
-		const msg = await channel.send({ content: "Select your roles", components: rows });
+		// get message from message ID "1053135399750467595" and edit it with the new rows
+		const msg = await channel.messages.fetch(handle.info.message);
+		await msg.edit({ components: rows });
 		console.log("Registered Menu: ");
 		console.log(msg);
 	});
