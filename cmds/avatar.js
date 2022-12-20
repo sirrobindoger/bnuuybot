@@ -2,7 +2,7 @@ import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js
 
 const Avatar = {
     //GUILD_ID: process.env.GUILD_ID,
-    IS_DISABLED: true, 
+    IS_DISABLED: false, 
     COMMAND_INFO: {
         name:"avatar",
         description: "It shows your or target user avatar",
