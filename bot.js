@@ -20,6 +20,7 @@ export const Bot = new Discord.Client({
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildInvites,
 		GatewayIntentBits.GuildPresences,
+		GatewayIntentBits.GuildVoiceStates,
 	],
 });
 
