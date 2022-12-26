@@ -48,7 +48,7 @@ const OnMessageReactionStarboard = {
                     console.log(embed);
                     // send the embed to the starboard channel
                     const starboardChannel = reaction.message.guild.channels.cache.find(c => c.name === "starboard");
-                    const starboardMessage = await starboardChannel.send({ content: content,embeds: [embed]});
+                    const starboardMessage = await starboardChannel.send({content: content,embeds: [embed], allowedMentions: { parse: [] }});
                     // add the message id to staredmessages.json
                     staredMessages[reaction.message.id] = starboardMessage.id;
                     fs.writeFileSync("./data/staredmessages.json", JSON.stringify(staredMessages, null, 4));
