@@ -16,6 +16,9 @@ const OnMessageReactionStarboard = {
         // get message from reaction
         const msg = reaction.message;
         if (reaction.emoji.name === "⭐") {
+            // check if its within the starboard channel
+            if (msg.channel.name === "starboard") return;
+
             // check if it was a bot reaction
             if (user.bot) return;
             // read from staredmessages.json to see if the message has already been starred
