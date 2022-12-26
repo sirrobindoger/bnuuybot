@@ -36,7 +36,7 @@ const OnMessageReactionStarboard = {
             }
             else {
                 // check if the message has at least 3 stars
-                if (reaction.count >= 1) {
+                if (reaction.count >= 3) {
                     // if it does, create an embed
                     const content = ` :star: ***${reaction.count}***`
                     const embed = new EmbedBuilder()
