@@ -1,4 +1,5 @@
 import fs from "fs";
+import {Bot} from "./bot.js";
 
 export class Resource {
     /**
@@ -40,10 +41,10 @@ export class Resource {
 
 }
 
-export const getChannelByID = (id, guild) => {
-    return guild.channels.cache.find(c => c.id === id);
+export const getChannelByID = (id) => {
+    return Bot.channels.cache.get(id);
 }
 
 export const getChannelByName = (name, guild) => {
-    return guild.channels.cache.find(c => c.name === name);
+    return guild.channels.cache.find(ch => ch.name === name);
 }

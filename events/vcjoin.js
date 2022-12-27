@@ -1,4 +1,5 @@
 import { Events, VoiceState } from "discord.js";
+import { getChannelByName } from "../util";
 
 const OnVCJoin = {
     EVENT_NAME: Events.VoiceStateUpdate,
@@ -9,7 +10,7 @@ const OnVCJoin = {
      */
     ON_FIRE: async (oldState, newState) => {
         if (newState?.channel?.members.size === 1) {
-            const msg = await newState.guild.channels.cache.find(c => c.name === "main-thread").send(`${newState.member.displayName} has joined ${newState.channel.name}!`);
+            const msg = await getChannelByName("main-thread").send(`${newState.member.displayName} has joined ${newState.channel.name}!`);
             // delete the message after 1 minute
             setTimeout(() => {
                 msg.delete();

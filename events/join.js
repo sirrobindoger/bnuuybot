@@ -1,11 +1,12 @@
 import { Events } from "discord.js";
 import {Bot} from "../bot.js";
+import { getChannelByID } from "../util.js";
 
 const inviteCodes = new Map();
 
 export const regenCache = async () => {
     // get guild "unixcore" by its name
-    const guild = await Bot.guilds.cache.find(g => g.id === "1051191635347767357");
+    const guild = await getChannelByID(process.env.GUILD_ID).guild;
 
     // get all invites from the guild
     const invites = await guild.invites.fetch();
@@ -23,7 +24,7 @@ const Join = {
 
     ON_FIRE: async (member) => {
         // get channel "enter-exit" from the guild "unixcore"
-        const channel = member.guild.channels.cache.find(ch => ch.name === "enter-exit");
+        const channel = getChannelByID(process.env.ENTER_EXIT_CHANNEL);
         // if the channel doesn't exist, stop
         if (!channel) return;
 

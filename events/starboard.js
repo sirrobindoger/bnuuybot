@@ -1,7 +1,7 @@
 import { EmbedBuilder } from "@discordjs/builders";
 import { Embed, Events, MessageReaction, User, Colors } from "discord.js";
 
-import { Resource } from "../util.js";
+import { getChannelByID, Resource } from "../util.js";
 import fs from "fs";
 
 const OnMessageReactionStarboard = {
@@ -29,7 +29,7 @@ const OnMessageReactionStarboard = {
             // check if the message has already been starred
             if (staredMessages.resource[reaction.message.id]) {
                 // if it has, get the message in the starboard channel
-                const starboardChannel = reaction.message.guild.channels.cache.find(c => c.name === "starboard");
+                const starboardChannel = getChannelByID(process.env.STARBOARD_CHANNEL);
                 const starboardMessage = await starboardChannel.messages.fetch(staredMessages.resource[reaction.message.id]);
                 
                 // edit the message
@@ -53,7 +53,7 @@ const OnMessageReactionStarboard = {
                         .setURL(reaction.message.url)
                         .setFooter({text: `#${reaction.message.channel.name}`});
                     // send the embed to the starboard channel
-                    const starboardChannel = reaction.message.guild.channels.cache.find(c => c.name === "starboard");
+                    const starboardChannel = getChannelByID(process.env.STARBOARD_CHANNEL);
                     const starboardMessage = await starboardChannel.send({content: content,embeds: [embed], allowedMentions: { parse: [] }});
                     // add the message id to staredmessages.json
                     staredMessages.resource[reaction.message.id] = starboardMessage.id;

@@ -1,10 +1,11 @@
 import { Events } from "discord.js";
+import { getChannelByID } from "../util";
 
 const Leave = {
     EVENT_NAME: Events.GuildMemberRemove,
     ON_FIRE: async (member) => {
         // get channel "enter-exit" from the guild "unixcore"
-        const channel = member.guild.channels.cache.find(ch => ch.name === "enter-exit");
+        const channel = getChannelByID(process.env.ENTER_EXIT_CHANNEL)
         // if the channel doesn't exist, return
         if (!channel) return;
         // send a message to the channel

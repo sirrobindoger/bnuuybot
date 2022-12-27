@@ -2,6 +2,7 @@ import assert from "assert";
 import Discord, {Events, GatewayIntentBits} from "discord.js";
 import fs from "fs";
 import dotenv from "dotenv";
+import { getChannelByName } from "./util";
 
 // load env
 dotenv.config();
@@ -62,7 +63,7 @@ const MenusInit = async () => {
 		const handle = cmd.default;
 		menus[handle.info.name] = handle;
 		// find channel by name
-		const channel = Bot.channels.cache.find(c => c.name === handle.info.channel);
+		const channel = getChannelByName(handle.info.channel);
 		const rows = handle.buildMenu(channel);
 		// get message from message ID "1053135399750467595" and edit it with the new rows
 		const msg = await channel.messages.fetch(handle.info.message);
