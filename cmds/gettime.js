@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js";
-import fs from "fs";
 
 import { DateTime } from "luxon";
+import {Resource} from "../util.js"
 
 const GetTime = {
     COMMAND_INFO: {
@@ -19,13 +19,13 @@ const GetTime = {
     },
     ON_INTERACTION: (cmd) => {
         // read the timezones from fs
-        const timezones = JSON.parse(fs.readFileSync("./data/timezones.json"));
+        const timezones = new Resource("timezones.json");
 
         // get the user from the command
         const user = cmd.options.getUser("user") || cmd.user;
 
         // get the timezone of the user
-        const timezone = timezones[user.id];
+        const timezone = timezones.resource[user.id];
 
         // if the timezone doesn't exist, tell them
         if (!timezone) {

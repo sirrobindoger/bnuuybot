@@ -14,9 +14,6 @@ export const regenCache = async () => {
         // add the invite code and uses to the map
         inviteCodes.set(invite.code, invite.uses);
     });
-
-    console.log(inviteCodes);
-    console.log("Cache regenerated");
 }
 
 

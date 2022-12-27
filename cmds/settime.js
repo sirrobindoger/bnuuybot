@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js";
 import {DateTime} from "luxon";
-import fs from "fs";
+import {Resource} from "../util.js";
+
 
 const SetTime = {
     IS_DISABLED: false,
@@ -22,17 +23,17 @@ const SetTime = {
         // check if the timezone is valid
 
         // load dat/timezones.json from fs
-        const timezones = JSON.parse(fs.readFileSync("./data/timezones.json"));
+        const timezones = new Resource("timezones.json");
 
         if (!DateTime.local().setZone(timezone).isValid) {
             cmd.reply({ content: "Invalid timezone", ephemeral: true });
             return;
         }
 
-        timezones[cmd.user.id] = timezone;
+        timezones.resource[cmd.user.id] = timezone;
 
         // save the timezones to fs
-        fs.writeFileSync("./data/timezones.json", JSON.stringify(timezones));
+        timezones.save();
 
         // get the current time in the timezone
         const time = DateTime.local().setZone(timezone).toLocaleString(DateTime.TIME_SIMPLE);

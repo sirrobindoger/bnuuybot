@@ -33,9 +33,8 @@ const CommandsInit = async () => {
 		// if handle.IS_DISABLED is true, skip
 		if (handle.IS_DISABLED) return;
 		commands[handle.COMMAND_INFO.name] = handle;
-		const cmdOut = await Bot.application?.commands.create(handle.COMMAND_INFO, handle.GUILD_ID);
-		console.log("Registered Command: ");
-		console.log(handle);
+		await Bot.application?.commands.create(handle.COMMAND_INFO, handle.GUILD_ID);
+		console.log("Registered Command: " + handle.COMMAND_INFO.name);
 	});
 };
 
@@ -50,8 +49,7 @@ const EventsInit = async () => {
 				await handle.ON_REGISTER();
 			}
 			Bot.on(handle.EVENT_NAME, handle.ON_FIRE);
-			console.log("Registered Event: ");
-			console.log(handle);
+			console.log("Registered Event: " + handle.EVENT_NAME);
 		} else {
 			await handle.ON_FIRE();
 		}
@@ -68,9 +66,8 @@ const MenusInit = async () => {
 		const rows = handle.buildMenu(channel);
 		// get message from message ID "1053135399750467595" and edit it with the new rows
 		const msg = await channel.messages.fetch(handle.info.message);
-		await msg.edit({ components: rows });
-		console.log("Registered Menu: ");
-		console.log(msg);
+		msg.edit({ components: rows });
+
 	});
 };
 
@@ -82,7 +79,7 @@ Bot.on(Events.InteractionCreate, async (interaction) => {
 
 	if (interaction.isAnySelectMenu) {
 		// iterate over menus
-		for (const [key, value] of Object.entries(menus)) {
+		for (const key of Object.keys(menus)) {
 			await menus[key].ON_INTERACTION(interaction);
 		}
 	}

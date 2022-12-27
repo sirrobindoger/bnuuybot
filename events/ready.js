@@ -23,7 +23,6 @@ const updatePresence = () => {
 const Ready = {
 	EVENT_NAME: "ready",
 	ON_FIRE: () => {
-		console.log("Hello!");
 		// set the presence
 		updatePresence();
 		// update the presence every 60 seconds
