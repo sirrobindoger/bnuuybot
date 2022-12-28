@@ -1,0 +1,18 @@
+{
+    "extends": "@tsconfig/node16/tsconfig.json",
+    "ts-node": {
+      "compilerOptions": {
+        "esModuleInterop": true,
+      }
+    },
+    "include": [
+      "util.ts",
+      "bot.ts",
+      "events/*.ts",
+      "cmds/*.ts",
+      "menus/*.ts",
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+  }
