@@ -10,8 +10,8 @@ const OnVCJoin = {
      */
     ON_FIRE: async (oldState : VoiceState, newState : VoiceState) => {
         if (newState?.channel?.members.size === 1) {
-            const msg = await getChannelByID(process.env.GENERAL_CHANNEL || "") as GuildTextBasedChannel;
-            msg.send(`${newState.member?.displayName} joined the voice channel!`);
+            const channel = await getChannelByID(process.env.GENERAL_CHANNEL || "") as GuildTextBasedChannel;
+            const msg = await channel.send(`${newState.member?.displayName} joined the voice channel!`);
             // delete the message after 1 minute
             setTimeout(() => {
                 msg.delete();
