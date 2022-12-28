@@ -5,7 +5,7 @@ import { DiscordMenu } from "../bot";
 
 const role_dict : {[key: string]: string[]} = {
     "OS": ["os/Debian", "os/Mint" ,"os/Pop!_OS" , "os/Fedora","os/Ubuntu", "os/Arch", "os/nixOS", "os/macOS", "os/Windows10", "os/Windows11", "os/FreeBSD", "os/NetBSD"],
-    "Desktop Env": ["de/GNOME", "de/KDE", "de/XFCE", "de/CDE", "de/Cinnamon", "wm/i3"],
+    "DE (or WM)": ["de/GNOME", "de/KDE", "de/XFCE", "de/CDE", "de/Cinnamon", "wm/i3"],
     "System": ["sys/BSD", "sys/Linux", "sys/NT", "sys/Darwin"],
 }
 
