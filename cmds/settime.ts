@@ -1,9 +1,10 @@
 import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js";
 import {DateTime} from "luxon";
-import {Resource} from "../util.js";
+import { DiscordCommand } from "../bot";
+import {Resource} from "../util";
 
 
-const SetTime = {
+const SetTime : DiscordCommand = {
     IS_DISABLED: false,
     COMMAND_INFO: {
         name: "settime",
@@ -13,13 +14,13 @@ const SetTime = {
             {
                 name: "timezone",
                 description: "Enter a timezone, E.X (EST or America/New_York",
-                require: true,
+                required: true,
                 type: ApplicationCommandOptionType.String
             }
         ]
     },
-    ON_INTERACTION: (cmd) => {
-        const timezone = cmd.options.getString("timezone");
+    ON_INTERACTION: async (cmd) => {
+        const timezone = cmd.options.getString("timezone") || "";
         // check if the timezone is valid
 
         // load dat/timezones.json from fs

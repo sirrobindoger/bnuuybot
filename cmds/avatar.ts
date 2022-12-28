@@ -1,8 +1,7 @@
 import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js"
+import { DiscordCommand } from "../bot";
 
-const Avatar = {
-    //GUILD_ID: process.env.GUILD_ID,
-    IS_DISABLED: false, 
+const Avatar : DiscordCommand = {
     COMMAND_INFO: {
         name:"avatar",
         description: "It shows your or target user avatar",
@@ -17,7 +16,7 @@ const Avatar = {
         ]
 
     },
-    ON_INTERACTION: (cmd) => {
+    ON_INTERACTION: async (cmd) => {
         // if no user is specified, use the author
         const user = cmd.options.getUser("user") || cmd.user;
         // send the avatar url

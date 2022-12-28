@@ -1,8 +1,7 @@
 import assert from "assert";
-import Discord, {Events, GatewayIntentBits} from "discord.js";
+import Discord, {ChatInputCommandInteraction, Events, GatewayIntentBits} from "discord.js";
 import fs from "fs";
 import dotenv from "dotenv";
-import { getChannelByName } from "./util";
 
 // load env
 dotenv.config();
@@ -10,9 +9,23 @@ dotenv.config();
 
 
 assert(process.env.TOKEN, "Token not found!");
-const commands = {};
-const events = {};
-const menus = {};
+const commands : {[key: string]: DiscordCommand} = {};
+const events : {[key: string]: DiscordEvent} = {};
+const menus : {[key: string]: any} = {};
+
+export type DiscordCommand = {
+	COMMAND_INFO: Discord.ApplicationCommandData;
+	GUILD_ID?: string;
+	IS_DISABLED?: boolean;
+	ON_INTERACTION: (interaction: ChatInputCommandInteraction) => Promise<void>;
+};
+
+export type DiscordEvent = {
+	EVENT_NAME: keyof Events;
+	ON_FIRE: (args: any) => Promise<void>;
+}
+
+
 
 export const Bot = new Discord.Client({
 	intents: [
@@ -57,28 +70,29 @@ const EventsInit = async () => {
 	});
 };
 
-const MenusInit = async () => {
-	fs.readdirSync("./menus/").forEach(async (file) => {
-		const cmd = await import("./menus/" + file);
-		const handle = cmd.default;
-		menus[handle.info.name] = handle;
-		// find channel by name
-		const channel = getChannelByName(handle.info.channel);
-		const rows = handle.buildMenu(channel);
-		// get message from message ID "1053135399750467595" and edit it with the new rows
-		const msg = await channel.messages.fetch(handle.info.message);
-		msg.edit({ components: rows });
+// const MenusInit = async () => {
+// 	fs.readdirSync("./menus/").forEach(async (file) => {
+// 		const cmd = await import("./menus/" + file);
+// 		const handle = cmd.default;
+// 		menus[handle.info.name] = handle;
+// 		// find channel by name
+// 		const channel : TextChannel = getChannelByName(handle.info.channel);
+// 		if (!channel) return;
+// 		const rows = handle.buildMenu(channel);
+// 		// get message from message ID "1053135399750467595" and edit it with the new rows
+// 		const msg = await channel.messages.fetch(handle.info.message);
+// 		msg.edit({ components: rows });
 
-	});
-};
+// 	});
+// };
 
 
 Bot.on(Events.InteractionCreate, async (interaction) => {
-	if (interaction.isCommand && commands[interaction.commandName]) {
-		await commands[interaction.commandName]?.ON_INTERACTION(interaction);
+	if (interaction.isCommand() && commands[interaction.commandName]) {
+		await commands[interaction.commandName]?.ON_INTERACTION(interaction as ChatInputCommandInteraction);
 	}
 
-	if (interaction.isAnySelectMenu) {
+	if (interaction.isAnySelectMenu()) {
 		// iterate over menus
 		for (const key of Object.keys(menus)) {
 			await menus[key].ON_INTERACTION(interaction);
@@ -90,7 +104,7 @@ Bot.on(Events.InteractionCreate, async (interaction) => {
 Bot.on("ready", async () => {
 	CommandsInit();
 	EventsInit();
-	MenusInit();
+	// MenusInit();
 })
 
 Bot.login(process.env.TOKEN);

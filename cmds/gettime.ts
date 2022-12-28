@@ -1,9 +1,10 @@
 import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js";
 
 import { DateTime } from "luxon";
-import {Resource} from "../util.js"
+import { DiscordCommand } from "../bot";
+import {Resource} from "../util"
 
-const GetTime = {
+const GetTime : DiscordCommand = {
     COMMAND_INFO: {
         name: "gettime",
         description: "Gets the time of a user",
@@ -17,7 +18,7 @@ const GetTime = {
             }
         ]
     },
-    ON_INTERACTION: (cmd) => {
+    ON_INTERACTION: async (cmd) => {
         // read the timezones from fs
         const timezones = new Resource("timezones.json");
 

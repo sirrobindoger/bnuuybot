@@ -1,14 +1,16 @@
 import fs from "fs";
-import {Bot} from "./bot.js";
+import {Bot} from "./bot";
 
 export class Resource {
+    resource: any;
+    file: string;
     /**
      * Loads a resource from a file
      * @expects file to be a valid path to a file within "./data/" directory, if not it will create the file
      * @param {String} file 
      * @returns {Object} the resource
      */
-    constructor(file) {
+    constructor(file : string) {
         this.file = file;
         if (fs.existsSync(`./data/${file}`)) {
             this.resource = JSON.parse(fs.readFileSync(`./data/${ file }`, "utf8"));
@@ -17,6 +19,9 @@ export class Resource {
             fs.writeFileSync(`./data/${ file }`, JSON.stringify(this.resource, null, 4));
         }
     }
+
+    // default get returns the resource
+
 
     /**
      * Saves the resource to the file
@@ -41,10 +46,10 @@ export class Resource {
 
 }
 
-export const getChannelByID = (id) => {
-    return Bot.channels.cache.get(id);
-}
+export const getChannelByID = (id : string) => (
+    Bot.guilds.cache.get(process.env.GUILD_ID || "")?.channels.cache.get(id)
+)
 
-export const getChannelByName = (name, guild) => {
-    return guild.channels.cache.find(ch => ch.name === name);
-}
+export const getChannelByName = (name : string) => (
+    Bot.guilds.cache.get(process.env.GUILD_ID || "")?.channels.cache.find(channel => channel.name === name)
+)
