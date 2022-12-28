@@ -1,25 +1,26 @@
 import { ActionRowBuilder, StringSelectMenuBuilder } from "@discordjs/builders"
+import { GuildMemberRoleManager } from "discord.js";
+import { DiscordMenu } from "../bot";
 
-const SelectMenu = {
-    info: {
-        name: "roleselect",
-        channel: "rules-and-roles",
-        message: "1053135399750467595",
-    },
-    role_dict: {
-        "OS": ["os/Debian", "os/Mint" ,"os/Pop!_OS" , "os/Fedora","os/Ubuntu", "os/Arch", "os/nixOS", "os/macOS", "os/Windows10", "os/Windows11", "os/FreeBSD", "os/NetBSD"],
-        "Desktop Env": ["de/GNOME", "de/KDE", "de/XFCE", "de/CDE", "de/Cinnamon"],
-        "System": ["sys/BSD", "sys/Linux", "sys/NT", "sys/Darwin"],
-    },
+
+const role_dict : {[key: string]: string[]} = {
+    "OS": ["os/Debian", "os/Mint" ,"os/Pop!_OS" , "os/Fedora","os/Ubuntu", "os/Arch", "os/nixOS", "os/macOS", "os/Windows10", "os/Windows11", "os/FreeBSD", "os/NetBSD"],
+    "Desktop Env": ["de/GNOME", "de/KDE", "de/XFCE", "de/CDE", "de/Cinnamon"],
+    "System": ["sys/BSD", "sys/Linux", "sys/NT", "sys/Darwin"],
+}
+
+const SelectMenu : DiscordMenu = {
+    name: "roleselect",
+    channel: "1051218518206578708",
     buildMenu: (channel) => {
         const rows = [];
-        for (const [key, value] of Object.entries(SelectMenu.role_dict)) {
+        for (const key of Object.keys(role_dict)) {
             const menu = new StringSelectMenuBuilder()
                 .setCustomId(key)
                 .setPlaceholder(`What ${key} do you use?`)
-                .setMaxValues(SelectMenu.role_dict[key].length)
+                .setMaxValues(role_dict[key].length)
                 .addOptions(
-                    ...SelectMenu.role_dict[key].map(role => (
+                    ...role_dict[key].map(role => (
                         {
                             label: role,
                             value: role,
@@ -39,19 +40,23 @@ const SelectMenu = {
         }
         return rows;
     },
-    ON_INTERACTION: (cmd) => {
+    onInteraction: async (cmd) => {
         // check if interaction is a select menu via role_dict in customId
-        if (Object.keys(SelectMenu.role_dict).includes(cmd.customId)) {
+        if (Object.keys(role_dict).includes(cmd.customId)) {
             // Roles are an array of strings
             console.log(cmd.values);
             const roles = cmd.values;
             const guild = cmd.guild;
             const member = cmd.member;
+            if (!guild || !member) return;
+
+            const memberRoles = member.roles as GuildMemberRoleManager;
 
             // check if reset value is in roles
             if (roles.includes("reset")) {
                 // remove all roles based on cmd.customId as role_dict key
-                member.roles.remove(guild.roles.cache.filter(r => SelectMenu.role_dict[cmd.customId].includes(r.name)));
+                
+                memberRoles.remove(guild.roles.cache.filter(r => role_dict[cmd.customId].includes(r.name)));
                 // reply to user with message only visible to them
                 cmd.reply({ content: "Roles removed!", ephemeral: true });
                 return;
@@ -60,8 +65,10 @@ const SelectMenu = {
 
             // find roles by name
             const roleObjs = roles.map(role => guild.roles.cache.find(r => r.name === role));
-            // add roles to member
-            member.roles.add(roleObjs);
+    
+            // @ts-ignore
+            memberRoles.add(roleObjs);
+
             // reply to user with message only visible to them
             cmd.reply({ content: "Roles added!", ephemeral: true });
         }

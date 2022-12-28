@@ -1,7 +1,8 @@
 import assert from "assert";
-import Discord, {ChatInputCommandInteraction, Events, GatewayIntentBits} from "discord.js";
+import Discord, {ActionRowBuilder, AnySelectMenuInteraction, ChatInputCommandInteraction, Events, GatewayIntentBits, TextChannel} from "discord.js";
 import fs from "fs";
 import dotenv from "dotenv";
+import { Resource } from "./util";
 
 // load env
 dotenv.config();
@@ -25,6 +26,12 @@ export type DiscordEvent = {
 	ON_FIRE: (args: any) => Promise<void>;
 }
 
+export type DiscordMenu = {
+	name: string;
+	channel: string;
+	buildMenu: (channel: Discord.TextChannel) => ActionRowBuilder[];
+	onInteraction: (interaction: AnySelectMenuInteraction) => Promise<void>;
+}
 
 
 export const Bot = new Discord.Client({
@@ -70,21 +77,38 @@ const EventsInit = async () => {
 	});
 };
 
-// const MenusInit = async () => {
-// 	fs.readdirSync("./menus/").forEach(async (file) => {
-// 		const cmd = await import("./menus/" + file);
-// 		const handle = cmd.default;
-// 		menus[handle.info.name] = handle;
-// 		// find channel by name
-// 		const channel : TextChannel = getChannelByName(handle.info.channel);
-// 		if (!channel) return;
-// 		const rows = handle.buildMenu(channel);
-// 		// get message from message ID "1053135399750467595" and edit it with the new rows
-// 		const msg = await channel.messages.fetch(handle.info.message);
-// 		msg.edit({ components: rows });
+const MenusInit = async () => {
+	fs.readdirSync("./menus/").forEach(async (file) => {
+		const cmd = await import("./menus/" + file);
+		const handle = cmd.default;
+		menus[handle.name] = handle;
+		console.log("Registered Menu: " + handle.name);
 
-// 	});
-// };
+		// check if channel exists
+		const channel = await Bot.channels.fetch(handle.channel);
+		if (channel) {
+			// load menus.json via Resource
+			const menusJson = new Resource("menus.json");
+
+			// check if menu exists in menus.json
+			if (!menusJson.resource[handle.name]) {
+				console.log("Creating menu: " + handle.name);
+				// create channel message
+				const msg = await (channel as TextChannel).send({components: handle.buildMenu(channel as TextChannel)});
+				// add menu to menus.json
+				menusJson.resource[handle.name] = msg.id;
+				menusJson.save();
+			} else {
+				console.log("Updating menu: " + handle.name);
+				// edit channel message
+				const msg = await (channel as TextChannel).messages.fetch(menusJson.resource[handle.name]);
+				await msg.edit({components: handle.buildMenu(channel as TextChannel)});
+			}
+		}
+
+
+	});
+};
 
 
 Bot.on(Events.InteractionCreate, async (interaction) => {
@@ -95,7 +119,7 @@ Bot.on(Events.InteractionCreate, async (interaction) => {
 	if (interaction.isAnySelectMenu()) {
 		// iterate over menus
 		for (const key of Object.keys(menus)) {
-			await menus[key].ON_INTERACTION(interaction);
+			await menus[key].onInteraction(interaction);
 		}
 	}
 	
@@ -104,7 +128,7 @@ Bot.on(Events.InteractionCreate, async (interaction) => {
 Bot.on("ready", async () => {
 	CommandsInit();
 	EventsInit();
-	// MenusInit();
+	MenusInit();
 })
 
 Bot.login(process.env.TOKEN);
