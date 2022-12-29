@@ -1,5 +1,5 @@
 import assert from "assert";
-import Discord, {ActionRowBuilder, AnySelectMenuInteraction, ChatInputCommandInteraction, Events, GatewayIntentBits, TextChannel} from "discord.js";
+import Discord, {ActionRowBuilder, AnyAPIActionRowComponent, AnySelectMenuInteraction, ChatInputCommandInteraction, Events, GatewayIntentBits, TextChannel} from "discord.js";
 import fs from "fs";
 import dotenv from "dotenv";
 import { Resource } from "./util";

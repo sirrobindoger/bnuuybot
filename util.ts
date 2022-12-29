@@ -40,8 +40,20 @@ export class Resource {
      * 
      * @returns {Object} the resource
      **/
-    get() {
-        return this.resource;
+    get(value : string) {
+        return this.resource[value];
+    }
+
+    /**
+     * Set resource
+     * 
+     * @param {String} key
+     * @param {Object} value
+     * @returns {void}
+     **/
+    set(key : string, value : any) {
+        this.resource[key] = value;
+        this.save();
     }
 
 }
