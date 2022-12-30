@@ -1,5 +1,5 @@
 import { EmbedBuilder } from "@discordjs/builders";
-import { ApplicationCommandOptionType, ApplicationCommandType, Colors, GuildTextBasedChannel, Message, PermissionFlagsBits } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, Colors, GuildTextBasedChannel, PermissionFlagsBits } from "discord.js";
 import { DiscordCommand } from "../bot";
 import { getChannelByID } from "../util";
 
@@ -48,7 +48,7 @@ const Announce : DiscordCommand = {
         const noembed = cmd.options.getBoolean("noembed");
 
         // build the message content
-        const msgContent : {embed?: EmbedBuilder, content?: string} = {};
+        const msgContent : {embeds?: [EmbedBuilder], content?: string} = {};
 
         
         if (!noembed) {
@@ -60,7 +60,7 @@ const Announce : DiscordCommand = {
             .setTimestamp();
             if (attachment) embed
             .setImage(attachment.url);
-            msgContent.embed = embed;
+            msgContent.embeds = [embed];
         } else {
             msgContent.content = content!;
         }
