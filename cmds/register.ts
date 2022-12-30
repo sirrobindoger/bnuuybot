@@ -21,13 +21,13 @@ const Register : DiscordCommand = {
         const username = cmd.options.getString("username", true);
         
         const userNameDB = new Resource("mcusers.json");
-
-        if (userNameDB.get(username)) {
-            cmd.reply({ephemeral: true, content: "Username already registered!"});
+  
+        if (userNameDB.get(cmd.user.id)) {
+            cmd.reply({ephemeral: true, content: `You already have a registered username: \`${userNameDB.get(cmd.user.id)}\``});
             return;
         }
 
-        userNameDB.set(username, cmd.user.id);
+        userNameDB.set(cmd.user.id, username);
 
         cmd.reply({ephemeral: true, content: `Registered \`${username}\``});
     }
