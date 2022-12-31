@@ -1,31 +1,51 @@
 
 import {Bot} from "../bot";
+import query from "gamedig"
 
+export let IsServerOnline = false;
 
 let i = 0;
 
-const updatePresence = () => {
-	// create a list of the word "Hello" in 8 different languages
-	const helloWords = ["Hello", "Hola", "Bonjour", "こんにちは", "Hej", "Olá", "你好"];
-	// set the presence to the word "Hello" in a different language every 60 seconds
-	if (!Bot.user) return;
-	Bot.user.setPresence({
-		activities: [{
-			name: `${helloWords[i]}`,
-		}]
-	});
-	// increment the index and reset it if it's greater than the length of the list
-	i++;
-	if (i >= helloWords.length) {
-		i = 0;
+const updatePresence = async () => {
+	const presence = new query();
+	try{
+		const data = await presence.query({
+			type: "minecraft",
+			host: process.env.SERVER_IP!,
+		});
+
+		const players = data.players.length;
+		const maxPlayers = data.maxplayers;
+
+		const status = players === 0 ? "idle" : "online";
+
+		Bot.user?.setPresence({
+			activities: [
+				{
+					name: `Online ${players}/${maxPlayers} Players`,
+				}
+			],
+			status: status
+		});
+		IsServerOnline = true;
+	} catch (e) {
+		const status = "dnd";
+		Bot.user?.setPresence({
+			activities: [
+				{
+					name: "Server Offline",
+				}
+			],
+			status: status
+		});
+		IsServerOnline = false;
 	}
-	
 }
 const Ready = {
 	EVENT_NAME: "ready",
-	ON_FIRE: () => {
+	ON_FIRE: async () => {
 		// set the presence
-		updatePresence();
+		await updatePresence();
 		// update the presence every 60 seconds
 		setInterval(updatePresence, 1000 * 60 * 60);
 	}

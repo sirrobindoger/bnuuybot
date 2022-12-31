@@ -9,10 +9,8 @@ dotenv.config();
 
 //assertions to verifiy intergrity of env
 assert(process.env.TOKEN != null, "Token not found!");
-assert(process.env.GUILD_ID != null, "Guild ID not found!");
-assert(process.env.STARBOARD_CHANNEL != null, "Starboard Channel ID not found!");
-assert(process.env.ENTER_EXIT_CHANNEL != null, "Enter/Exit Channel ID not found!");
-assert(process.env.GENERAL_CHANNEL != null, "General Channel ID not found!");
+assert(process.env.SERVER_IP != null, "Server IP not found!");
+assert(process.env.SERVER_RCON_PASSWORD != null, "Server RCON Password not found!");
 
 
 assert(process.env.TOKEN, "Token not found!");
