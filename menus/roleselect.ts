@@ -8,7 +8,7 @@ const role_dict:{[key: string]: string[]} = {
     "DE (or WM)": ["de/GNOME", "de/KDE", "de/XFCE", "de/CDE", "de/Cinnamon", "wm/i3"],
     "System": ["sys/BSD", "sys/Linux", "sys/NT", "sys/Darwin"],
     "Pronouns": ["He/Him", "She/Her", "They/Them", "Any Pronouns"],
-    "Art Software": ["art/Blender", "art/ClipStudioPant", "art/Photoshop", "art/Procreate", "art/Sai", "art/Krita"],
+    "Art Software": ["art/Blender", "art/ClipStudioPaint", "art/Photoshop", "art/Procreate", "art/Sai", "art/Krita"],
 }
 
 const SelectMenu : DiscordMenu = {
