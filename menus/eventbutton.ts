@@ -32,7 +32,7 @@ const EventButton : DiscordMenu = {
         // get the guild and member
         const guild = cmd.guild;
         const member = cmd.member;
-        if (!guild || !member) return;
+        if (!guild || !member || cmd.customId != "eventbutton" ) return;
 
         const memberRoles = member.roles as GuildMemberRoleManager;
 
