@@ -9,7 +9,6 @@ const role_dict:{[key: string]: string[]} = {
     "System": ["sys/BSD", "sys/Linux", "sys/NT", "sys/Darwin"],
     "Pronouns": ["He/Him", "She/Her", "They/Them", "Any Pronouns"],
     "Art Software": ["art/Blender", "art/ClipStudioPant", "art/Photoshop", "art/Procreate", "art/Sai", "art/Krita"],
-    "Other roles": ["Event Notifier"],
 }
 
 const SelectMenu : DiscordMenu = {
