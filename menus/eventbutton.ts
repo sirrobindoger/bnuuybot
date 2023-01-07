@@ -39,12 +39,12 @@ const EventButton : DiscordMenu = {
         // check if the user selected yes
         if (option === "yes") {
             // add the role
-            memberRoles.add(guild.roles.cache.filter(r => r.name === "Event Notifer"));
+            memberRoles.add(guild.roles.cache.filter(r => r.name === "Event Notifier"));
             // reply to user with message only visible to them
             cmd.reply({ content: "You will now be notified of events!", ephemeral: true });
         } else {
             // remove the role
-            memberRoles.remove(guild.roles.cache.filter(r => r.name === "Event Notifer"));
+            memberRoles.remove(guild.roles.cache.filter(r => r.name === "Event Notifier"));
             // reply to user with message only visible to them
             cmd.reply({ content: "You will no longer be notified of events!", ephemeral: true });
         }
