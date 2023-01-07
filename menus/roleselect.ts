@@ -19,7 +19,7 @@ const SelectMenu : DiscordMenu = {
         for (const key of Object.keys(role_dict)) {
             const menu = new StringSelectMenuBuilder()
                 .setCustomId(key)
-                .setPlaceholder(`What ${key} do you use/want?`)
+                .setPlaceholder(`What ${key} do you use?`)
                 .setMaxValues(role_dict[key].length)
                 .addOptions(
                     ...role_dict[key].map(role => (
