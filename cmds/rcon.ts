@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, ApplicationCommandType, Colors, EmbedBuilder, PermissionFlagsBits } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, Colors, EmbedBuilder, GuildMemberRoleManager, PermissionFlagsBits } from "discord.js";
 import { DiscordCommand } from "../bot";
 import {Rcon} from "rcon-client"
 
@@ -15,7 +15,7 @@ const RconCommand : DiscordCommand = {
                 required: true
             }
         ],
-        defaultMemberPermissions: PermissionFlagsBits.Administrator,
+        defaultMemberPermissions: PermissionFlagsBits.ManageMessages,
     },
     ON_INTERACTION: async (interaction) => {
         const command = interaction.options.getString("command")!;
@@ -25,7 +25,17 @@ const RconCommand : DiscordCommand = {
             port: 25575,
             password: process.env.SERVER_RCON_PASSWORD!
         });
-
+        // check if they have role to use command
+        const memberRoles = interaction.member!.roles as GuildMemberRoleManager;
+        if (!memberRoles.cache.has(process.env.MINERAFT_ROLEID!)) {
+            embedResponse
+                .setTitle("No Permission")
+                .setDescription("You do not have permission to use this command!")
+                .setColor(Colors.Red)
+                .setTimestamp();
+            await interaction.reply({embeds: [embedResponse], ephemeral: true});
+            return;
+        }
         try{
             await rcon.connect();
             const response = await rcon.send(command);
