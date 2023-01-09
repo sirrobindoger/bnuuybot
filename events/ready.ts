@@ -5,7 +5,7 @@ import query from "gamedig"
 export let IsServerOnline = false;
 
 let i = 0;
-
+let currPlayers = 0;
 const updatePresence = async () => {
 	const presence = new query();
 	try{
@@ -18,7 +18,10 @@ const updatePresence = async () => {
 		const maxPlayers = data.maxplayers;
 
 		const status = players === 0 ? "idle" : "online";
-
+		// if the player count is the same as the last time we checked, don't update the presence
+		if (currPlayers === players) {
+			return;
+		}
 		Bot.user?.setPresence({
 			activities: [
 				{
@@ -27,6 +30,7 @@ const updatePresence = async () => {
 			],
 			status: status
 		});
+		currPlayers = players;
 		IsServerOnline = true;
 	} catch (e) {
 		const status = "dnd";
