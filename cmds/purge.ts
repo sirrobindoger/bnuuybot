@@ -43,6 +43,9 @@ const PurgeCommand : DiscordCommand = {
             // delete the messages
             await channel.bulkDelete(amount);
         }
+
+        // send a message saying the messages were deleted
+        await interaction.reply(`Deleted ${amount} messages.`);
     }
 
 }
