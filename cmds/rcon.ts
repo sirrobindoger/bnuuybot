@@ -27,7 +27,7 @@ const RconCommand : DiscordCommand = {
         });
         // check if they have role to use command
         const memberRoles = interaction.member!.roles as GuildMemberRoleManager;
-        if (!memberRoles.cache.has(process.env.MINERAFT_RCON_ROLEID!)) {
+        if (!memberRoles.cache.has(process.env.MINECRAFT_RCON_ROLEID!)) {
             embedResponse
                 .setTitle("No Permission")
                 .setDescription("You do not have permission to use this command!")
