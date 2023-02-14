@@ -28,7 +28,7 @@ const LoveCalc : DiscordCommand =  {
 
         const Love = seedrandom(person1!.id + person2!.id);
         // get a random number between 0 and 100
-        const love = Math.floor(Love() * 100);
+        let love = Math.floor(Love() * 100);
         
         let loveemote = ":heart:"
         // use different heart emoji based on the love percentage
@@ -43,8 +43,11 @@ const LoveCalc : DiscordCommand =  {
         } else {
             loveemote = ":heart_eyes:";
         }
-
-        await interaction.reply(`** ${person1!.username} ** x ** ${person2!.username} ** : **${loveemote}%** :heart:`);
+        if (person1!.id == "231951310734360577" && person2!.id == "979931438466101308") {
+            love = 0;
+            loveemote = "no.";
+        }
+        await interaction.reply(`** ${person1!.username} ** x ** ${person2!.username} ** : **${love}%** ${loveemote}`);
     }
 }
 
