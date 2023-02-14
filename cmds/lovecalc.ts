@@ -43,7 +43,7 @@ const LoveCalc : DiscordCommand =  {
         } else {
             loveemote = ":heart_eyes:";
         }
-        if (person1!.id == "231951310734360577" && person2!.id == "979931438466101308") {
+        if (person1!.id == "979931438466101308" && person2!.id == "231951310734360577" || person1!.id == "231951310734360577" && person2!.id == "979931438466101308") {
             love = 0;
             loveemote = "no.";
         }
