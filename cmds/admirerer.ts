@@ -23,7 +23,6 @@ const Admierer : DiscordCommand = {
                 type: ApplicationCommandOptionType.String
             }
         ],
-        defaultMemberPermissions: PermissionFlagsBits.KickMembers
     },
 
     ON_INTERACTION: async (cmd) => {
