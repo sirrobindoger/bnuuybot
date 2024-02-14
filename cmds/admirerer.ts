@@ -57,7 +57,7 @@ const Admierer : DiscordCommand = {
         const embedMessage = new EmbedBuilder();
 
         embedMessage
-            .setTitle(`**Someone** wrote a message for **${user?.username}**!`)
+            .setTitle(`**Someone** wrote a message for **${user?.displayName}**!`)
             .setDescription("```" + message + "```")
             .setTimestamp()
             .setThumbnail("https://cdn.discordapp.com/attachments/1051216641494634638/1207123343971713024/Screenshot_2024-02-13_at_19.37.04.png?ex=65de8038&is=65cc0b38&hm=c63cd718e972749cdf81d608bac812afd30f628d0a228bc3e522ae46cb07e8cf&")
