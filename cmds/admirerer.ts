@@ -67,7 +67,7 @@ const Admierer : DiscordCommand = {
 
         // dm the target user that they have a secret admirer
         try {
-            user?.send({ content: `Hey!! Someone wrote a message for you! Check it out in ${admireMessage.url}!` });
+            user?.send({ content: `Hey!! Someone wrote a message for you in Unixcore! Check it out in ${admireMessage.url}!` });
         } catch (e) {
             console.error(e);
         }
