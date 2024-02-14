@@ -17,6 +17,12 @@ const Announce : DiscordCommand = {
                 type: ApplicationCommandOptionType.String
             },
             {
+                name: "channel",
+                description: "The channel to send the announcement to",
+                required: false,
+                type: ApplicationCommandOptionType.Channel
+            },
+            {
                 name: "attachment",
                 description: "The attachment of the announcement",
                 required: false,
@@ -35,7 +41,7 @@ const Announce : DiscordCommand = {
 
     ON_INTERACTION: async (cmd) => {
         // get annonucement channel object
-        const channel = await getChannelByID(process.env.ANNOUNCEMENTS_CHANNEL!) as GuildTextBasedChannel;
+        const channel = await getChannelByID(cmd.options.getChannel("channel")?.id || process.env.ANNOUNCEMENTS_CHANNEL!) as GuildTextBasedChannel;
 
         if (!channel) {
             cmd.reply({ content: "Announcement channel not found!", ephemeral: true });
