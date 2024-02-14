@@ -41,10 +41,10 @@ const Admierer : DiscordCommand = {
 
         AdmirerDB.resource[cmd.user.id] = AdmirerDB.resource[cmd.user.id] || {};
 
-        if (AdmirerDB.resource[cmd.user.id]?.admired ) {
-            cmd.reply({ content: "Hey!! You already admired someone, pleas wait to do that again ehe", ephemeral: true });
-            return;
-        }
+        // if (AdmirerDB.resource[cmd.user.id]?.admired ) {
+        //     cmd.reply({ content: "Hey!! You already admired someone, pleas wait to do that again ehe", ephemeral: true });
+        //     return;
+        // }
         
         AdmirerDB.resource[cmd.user.id].admired = user!.id;
 
