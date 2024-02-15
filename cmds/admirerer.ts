@@ -5,6 +5,7 @@ import { Resource, getChannelByName } from "../util";
 
 const Admierer : DiscordCommand = {
     GUILD_ID: process.env.GUILD_ID!,
+    IS_DISABLED: true,
     COMMAND_INFO: {
         name: "admire",
         description: "Admire someone",
