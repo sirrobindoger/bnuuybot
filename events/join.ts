@@ -40,12 +40,12 @@ const Join = {
         }
 
         // Send the user a DM message on join
-        member.send(`Hey! I can't help but noticed you joined! I'm sure you're thinkigh about leaving in 0.2 seconds because you have an attention span of a frog, but please stay!\nPLEASEPLEASPLEASPLEASPLEASPLEASPLEASPLEASPLEASPLEASEE`);
+        member.send(`Hey! I can't help but noticed you joined!\n I'm sure you're thinkigh about leaving in 0.2 seconds because you have an attention span of a frog, but please stay!\nPLEASEPLEASPLEASPLEASPLEASPLEASPLEASPLEASPLEASPLEASEE`);
         // sleep for 5 seconds
         member.dmChannel?.sendTyping();
         await new Promise((resolve) => setTimeout(resolve, 5000));
         // Send a more desperate message
-        member.send(`I'm begging you, please stay! I'll give you a cookie if you do!`);
+        member.send(`but in case u do, here's out invite code so u can get bak discord.gg/unixcore`);
         member.send(`<333333????`);
 
         // update the cache
