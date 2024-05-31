@@ -6,7 +6,7 @@ import { DiscordMenu } from "../bot";
 const role_dict:{[key: string]: string[]} = {
     "OS": [ "os/Gentoo", "os/iOS", "os/Android","os/Trisquel", "os/Debian", "os/ZorinOS","os/Mint" ,"os/Pop!_OS" , "os/Fedora","os/Ubuntu", "os/Arch", "os/nixOS", "os/macOS", "os/Windows10", "os/Windows11", "os/FreeBSD", "os/NetBSD"],
     "DE (or WM)": ["de/GNOME", "de/KDE", "de/XFCE", "de/CDE", "de/Cinnamon", "wm/i3", "wm/Hyprland"],
-    "System": ["sys/BSD", "sys/Linux", "sys/NT", "sys/Darwin"],
+    //"System": ["sys/BSD", "sys/Linux", "sys/NT", "sys/Darwin"],
     "Pronouns": ["He/Him", "She/Her", "They/Them", "Any Pronouns"],
     "Art Software": ["art/Blender", "art/ClipStudioPaint", "art/Photoshop", "art/Procreate", "art/Sai", "art/Krita"],
 }
