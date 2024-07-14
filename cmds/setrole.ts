@@ -115,6 +115,7 @@ const SetRole: DiscordCommand = {
             color: resolveColor(roleColor as ColorResolvable),
             icon: roleIcon ? roleIcon.url : null,
             position: unixTeamRole ? unixTeamRole.position - 1 : 0,
+            hoist: true,
         });
 
         // Save the new role id
