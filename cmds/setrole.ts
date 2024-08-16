@@ -71,6 +71,8 @@ const SetRole: DiscordCommand = {
             return;
         }
 
+
+
         // Get command options
         const roleName = cmd.options.getString("rolename", true);
         //const roleColor = cmd.options.getString("rolecolor", true);
@@ -105,18 +107,24 @@ const SetRole: DiscordCommand = {
         if (userRoleId) {
             // Edit existing role
             const role = cmd.guild!.roles.cache.get(userRoleId);
-            if (role) {
-                await role.edit({
-                    name: roleName,
-                    //color: resolveColor(roleColor as ColorResolvable),
-                    color: resolveColor(hexColor as HexColorString),
-                    icon: roleIcon ? roleIcon.url : null,
-                });
-                cmd.reply({ content: `Your role has been updated: ${roleName}`, ephemeral: true });
+            try {
+                if (role) {
+                    await role.edit({
+                        name: roleName,
+                        //color: resolveColor(roleColor as ColorResolvable),
+                        color: resolveColor(hexColor as HexColorString),
+                        icon: roleIcon ? roleIcon.url : null,
+                    });
+                    cmd.reply({ content: `Your role has been updated: ${roleName}`, ephemeral: true });
+                    return;
+                } else {
+                    // If role doesn't exist, remove the reference and create a new one
+                    removeUserRoleId(userId);
+                }
+            } catch (e) {
+                console.error(e);
+                cmd.reply({ content: "PLEASE ENTER THE RIGHT STUFF IN OR YOU WILL EXPLODE\n" + e, ephemeral: true });
                 return;
-            } else {
-                // If role doesn't exist, remove the reference and create a new one
-                removeUserRoleId(userId);
             }
         }
 
