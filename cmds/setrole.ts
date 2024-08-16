@@ -14,39 +14,39 @@ const SetRole: DiscordCommand = {
                 required: true,
                 type: ApplicationCommandOptionType.String,
             },
-            {
-                name: "rolecolor",
-                description: "The color of the role",
-                required: false,
-                type: ApplicationCommandOptionType.String,
-                choices: [
-                    { name: "White", value: "White" },
-                    { name: "Aqua", value: "Aqua" },
-                    { name: "Green", value: "Green" },
-                    { name: "Blue", value: "Blue" },
-                    { name: "Yellow", value: "Yellow" },
-                    { name: "Purple", value: "Purple" },
-                    { name: "Luminous Vivid Pink", value: "LuminousVividPink" },
-                    { name: "Fuchsia", value: "Fuchsia" },
-                    { name: "Gold", value: "Gold" },
-                    { name: "Orange", value: "Orange" },
-                    { name: "Red", value: "Red" },
-                    { name: "Grey", value: "Grey" },
-                    { name: "Navy", value: "Navy" },
-                    { name: "Dark Aqua", value: "DarkAqua" },
-                    { name: "Dark Green", value: "DarkGreen" },
-                    { name: "Dark Purple", value: "DarkPurple" },
-                    { name: "Dark Vivid Pink", value: "DarkVividPink" },
-                    { name: "Dark Gold", value: "DarkGold" },
-                    { name: "Dark Orange", value: "DarkOrange" },
-                    { name: "Dark Red", value: "DarkRed" },
-                    { name: "Dark Grey", value: "DarkGrey" },
-                    { name: "Darker Grey", value: "DarkerGrey" },
-                    { name: "Light Grey", value: "LightGrey" },
-                    { name: "Dark Navy", value: "DarkNavy" },
-                    { name: "Dark But Not Black", value: "DarkButNotBlack" },
-                ],
-            },
+            // {
+            //     name: "rolecolor",
+            //     description: "The color of the role",
+            //     required: false,
+            //     type: ApplicationCommandOptionType.String,
+            //     choices: [
+            //         { name: "White", value: "White" },
+            //         { name: "Aqua", value: "Aqua" },
+            //         { name: "Green", value: "Green" },
+            //         { name: "Blue", value: "Blue" },
+            //         { name: "Yellow", value: "Yellow" },
+            //         { name: "Purple", value: "Purple" },
+            //         { name: "Luminous Vivid Pink", value: "LuminousVividPink" },
+            //         { name: "Fuchsia", value: "Fuchsia" },
+            //         { name: "Gold", value: "Gold" },
+            //         { name: "Orange", value: "Orange" },
+            //         { name: "Red", value: "Red" },
+            //         { name: "Grey", value: "Grey" },
+            //         { name: "Navy", value: "Navy" },
+            //         { name: "Dark Aqua", value: "DarkAqua" },
+            //         { name: "Dark Green", value: "DarkGreen" },
+            //         { name: "Dark Purple", value: "DarkPurple" },
+            //         { name: "Dark Vivid Pink", value: "DarkVividPink" },
+            //         { name: "Dark Gold", value: "DarkGold" },
+            //         { name: "Dark Orange", value: "DarkOrange" },
+            //         { name: "Dark Red", value: "DarkRed" },
+            //         { name: "Dark Grey", value: "DarkGrey" },
+            //         { name: "Darker Grey", value: "DarkerGrey" },
+            //         { name: "Light Grey", value: "LightGrey" },
+            //         { name: "Dark Navy", value: "DarkNavy" },
+            //         { name: "Dark But Not Black", value: "DarkButNotBlack" },
+            //     ],
+            // },
             {
                 name: "roleicon",
                 description: "The icon of the role",
@@ -56,7 +56,7 @@ const SetRole: DiscordCommand = {
             {
                 name: "hexcolor",
                 description: "The hex color of the role",
-                required: false,
+                required: true,
                 type: ApplicationCommandOptionType.String,
             }
         ],
@@ -72,16 +72,16 @@ const SetRole: DiscordCommand = {
 
         // Get command options
         const roleName = cmd.options.getString("rolename", true);
-        const roleColor = cmd.options.getString("rolecolor", true);
-        const hexColor = cmd.options.getString("hexcolor");
-        console.log(roleColor);
+        //const roleColor = cmd.options.getString("rolecolor", true);
+        let hexColor = cmd.options.getString("hexcolor");
+        //console.log(roleColor);
         const roleIcon = cmd.options.getAttachment("roleicon");
 
-        // if neither roleColor nor hexColor is provided, tell the user to provide one
-        if (!roleColor && !hexColor) {
-            cmd.reply({ content: "You must provide a role color or hex color.", ephemeral: true });
-            return;
+        // if hexColor does not have a "#" prefix, add it
+        if (!hexColor!.startsWith("#")) {
+            hexColor = `#${hexColor}`;
         }
+
 
         const userId = cmd.user.id;
 
@@ -108,7 +108,7 @@ const SetRole: DiscordCommand = {
                 await role.edit({
                     name: roleName,
                     //color: resolveColor(roleColor as ColorResolvable),
-                    color: hexColor ? resolveColor(hexColor as HexColorString) : resolveColor(roleColor as ColorResolvable),
+                    color: resolveColor(hexColor as HexColorString),
                     icon: roleIcon ? roleIcon.url : null,
                 });
                 cmd.reply({ content: `Your role has been updated: ${roleName}`, ephemeral: true });
@@ -126,7 +126,7 @@ const SetRole: DiscordCommand = {
         // Create a new role
         const newRole = await cmd.guild!.roles.create({
             name: roleName,
-            color: resolveColor(roleColor as ColorResolvable),
+            color: resolveColor(hexColor as HexColorString),
             icon: roleIcon ? roleIcon.url : null,
             position: unixTeamRole ? unixTeamRole.position - 1 : 0,
             hoist: true,
