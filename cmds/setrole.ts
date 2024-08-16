@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, ApplicationCommandType, ColorResolvable, GuildMember, resolveColor } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, ColorResolvable, GuildMember, HexColorString, resolveColor } from "discord.js";
 import { DiscordCommand } from "../bot";
 import { Resource } from "../util";
 
@@ -53,6 +53,12 @@ const SetRole: DiscordCommand = {
                 required: false,
                 type: ApplicationCommandOptionType.Attachment,
             },
+            {
+                name: "hexcolor",
+                description: "The hex color of the role",
+                required: false,
+                type: ApplicationCommandOptionType.String,
+            }
         ],
     },
     ON_INTERACTION: async (cmd) => {
@@ -67,6 +73,7 @@ const SetRole: DiscordCommand = {
         // Get command options
         const roleName = cmd.options.getString("rolename", true);
         const roleColor = cmd.options.getString("rolecolor", true);
+        const hexColor = cmd.options.getString("hexcolor");
         console.log(roleColor);
         const roleIcon = cmd.options.getAttachment("roleicon");
 
@@ -94,7 +101,8 @@ const SetRole: DiscordCommand = {
             if (role) {
                 await role.edit({
                     name: roleName,
-                    color: resolveColor(roleColor as ColorResolvable),
+                    //color: resolveColor(roleColor as ColorResolvable),
+                    color: hexColor ? resolveColor(hexColor as HexColorString) : resolveColor(roleColor as ColorResolvable),
                     icon: roleIcon ? roleIcon.url : null,
                 });
                 cmd.reply({ content: `Your role has been updated: ${roleName}`, ephemeral: true });
