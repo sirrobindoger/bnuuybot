@@ -14,6 +14,12 @@ const SetRole: DiscordCommand = {
                 required: true,
                 type: ApplicationCommandOptionType.String,
             },
+            {
+                name: "hexcolor",
+                description: "The hex color of the role",
+                required: true,
+                type: ApplicationCommandOptionType.String,
+            },
             // {
             //     name: "rolecolor",
             //     description: "The color of the role",
@@ -53,12 +59,7 @@ const SetRole: DiscordCommand = {
                 required: false,
                 type: ApplicationCommandOptionType.Attachment,
             },
-            {
-                name: "hexcolor",
-                description: "The hex color of the role",
-                required: true,
-                type: ApplicationCommandOptionType.String,
-            }
+
         ],
     },
     ON_INTERACTION: async (cmd) => {
