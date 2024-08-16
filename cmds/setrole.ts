@@ -17,7 +17,7 @@ const SetRole: DiscordCommand = {
             {
                 name: "rolecolor",
                 description: "The color of the role",
-                required: true,
+                required: false,
                 type: ApplicationCommandOptionType.String,
                 choices: [
                     { name: "White", value: "White" },
@@ -76,6 +76,12 @@ const SetRole: DiscordCommand = {
         const hexColor = cmd.options.getString("hexcolor");
         console.log(roleColor);
         const roleIcon = cmd.options.getAttachment("roleicon");
+
+        // if neither roleColor nor hexColor is provided, tell the user to provide one
+        if (!roleColor && !hexColor) {
+            cmd.reply({ content: "You must provide a role color or hex color.", ephemeral: true });
+            return;
+        }
 
         const userId = cmd.user.id;
 
