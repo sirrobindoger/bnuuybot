@@ -47,6 +47,15 @@ const LoveCalc : DiscordCommand =  {
             love = 0;
             loveemote = "no.";
         }
+
+        // if person1.username and person1.username is "sirro" and "molokov_cocktail", then set love = 1000, loveemote = ":star2:"
+        //await interaction.reply(`** ${person1!.username} ** x ** ${person2!.username} ** : **${love}%** ${loveemote}`);
+
+        if (person1!.username == "sirro" && person2!.username == "molokov_cocktail" || person1!.username == "molokov_cocktail" && person2!.username == "sirro") {
+            love = 1000;
+            loveemote = ":heart_eyes:";
+        }
+
         await interaction.reply(`** ${person1!.username} ** x ** ${person2!.username} ** : **${love}%** ${loveemote}`);
     }
 }
