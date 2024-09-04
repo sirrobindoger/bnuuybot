@@ -26,7 +26,10 @@ const LoveCalc : DiscordCommand =  {
         const person1 = interaction.options.getUser("person1");
         const person2 = interaction.options.getUser("person2");
 
-        const Love = seedrandom(person1!.id + person2!.id);
+        // add the two user ids together, first converting ot integers
+        let loveseed = parseInt(person1!.id) + parseInt(person2!.id);
+
+        const Love = seedrandom(loveseed.toString());
         // get a random number between 0 and 100
         let love = Math.floor(Love() * 100);
         
@@ -41,7 +44,7 @@ const LoveCalc : DiscordCommand =  {
         } else if (love < 80) {
             loveemote = ":sparkling_heart:";
         } else {
-            loveemote = ":heart_eyes:";
+            loveemote = ":heart_on_fire:";
         }
         if (person1!.id == "979931438466101308" && person2!.id == "231951310734360577" || person1!.id == "231951310734360577" && person2!.id == "979931438466101308") {
             love = 0;
@@ -53,7 +56,13 @@ const LoveCalc : DiscordCommand =  {
 
         if (person1!.username == "sirro" && person2!.username == "molokov_cocktail" || person1!.username == "molokov_cocktail" && person2!.username == "sirro") {
             love = 1000;
-            loveemote = ":heart_eyes:";
+            loveemote = ":heart_on_fire:";
+        }
+
+        // do the same for "im.blair" and "crazy_boi92"
+        if (person1!.username == "im.blair" && person2!.username == "crazy_boi92" || person1!.username == "crazy_boi92" && person2!.username == "im.blair") {
+            love = 99;
+            loveemote = ":heart_on_fire:";
         }
 
         await interaction.reply(`** ${person1!.username} ** x ** ${person2!.username} ** : **${love}%** ${loveemote}`);
