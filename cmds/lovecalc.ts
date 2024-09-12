@@ -59,12 +59,6 @@ const LoveCalc : DiscordCommand =  {
             loveemote = ":heart_on_fire:";
         }
 
-        // do the same for "im.blair" and "crazy_boi92"
-        if (person1!.username == "im.blair" && person2!.username == "crazy_boi92" || person1!.username == "crazy_boi92" && person2!.username == "im.blair") {
-            love = 99;
-            loveemote = ":heart_on_fire:";
-        }
-
         await interaction.reply(`** ${person1!.username} ** x ** ${person2!.username} ** : **${love}%** ${loveemote}`);
     }
 }
