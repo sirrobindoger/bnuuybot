@@ -6,6 +6,7 @@ const notification_roles: { [label: string]: string } = {
     "Bump Reminders": "bmper",
     "Revive Chat Crew (Kitas BFF)": "kita's bff",
     "Event Notifier": "Event Notifier",
+	"Wordle Expert": "wordler",
 };
 
 const EventButton: DiscordMenu = {
