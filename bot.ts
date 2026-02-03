@@ -28,7 +28,7 @@ export type DiscordCommand = {
 };
 
 export type DiscordEvent = {
-	EVENT_NAME: keyof Events;
+	EVENT_NAME: Events;
 	ON_FIRE: (args: any) => Promise<void>;
 }
 
