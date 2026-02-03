@@ -1,56 +1,66 @@
 import { ActionRowBuilder, GuildMemberRoleManager, StringSelectMenuBuilder } from "discord.js";
 import { DiscordMenu } from "../bot";
 
-const EventButton : DiscordMenu = {
+// Label -> Role Name mapping
+const notification_roles: { [label: string]: string } = {
+    "Bump Reminders": "bmper",
+    "Revive Chat Crew (Kitas BFF)": "kita's bff",
+    "Event Notifier": "Event Notifier",
+};
+
+const EventButton: DiscordMenu = {
     name: "eventbutton",
     channel: "1051218518206578708",
 
     buildMenu: (channel) => {
         const menu = new StringSelectMenuBuilder()
             .setCustomId("eventbutton")
-            .setPlaceholder("Would you like to be notified of events?")
+            .setPlaceholder("What notifications do you want to be pinged about?")
+            .setMaxValues(Object.keys(notification_roles).length)
             .addOptions(
+                ...Object.keys(notification_roles).map(label => ({
+                    label: label,
+                    value: label,
+                })),
                 {
-                    label: "Yes",
-                    value: "yes",
-                    description: "Select this to be notified of events",
-                },
-                {
-                    label: "No",
-                    value: "no",
-                    description: "Select this to not be notified of events",
+                    label: "Reset",
+                    value: "reset",
+                    description: "Remove all notification roles",
                 }
-            )
+            );
         const row = new ActionRowBuilder()
             .addComponents(menu);
         return [row];
     },
 
     onInteraction: async (cmd) => {
-        // get the option the user selected
-        const option = cmd.values[0];
-        // get the guild and member
         const guild = cmd.guild;
         const member = cmd.member;
-        if (!guild || !member || cmd.customId != "eventbutton" ) return;
+        if (!guild || !member || cmd.customId !== "eventbutton") return;
 
         const memberRoles = member.roles as GuildMemberRoleManager;
+        const selectedValues = cmd.values;
 
-        // check if the user selected yes
-        if (option === "yes") {
-            // add the role
-            memberRoles.add(guild.roles.cache.filter(r => r.name === "Event Notifier"));
-            // reply to user with message only visible to them
-            cmd.reply({ content: "You will now be notified of events!", ephemeral: true });
-        } else {
-            // remove the role
-            memberRoles.remove(guild.roles.cache.filter(r => r.name === "Event Notifier"));
-            // reply to user with message only visible to them
-            cmd.reply({ content: "You will no longer be notified of events!", ephemeral: true });
+        // Check if reset was selected
+        if (selectedValues.includes("reset")) {
+            // Remove all notification roles
+            const rolesToRemove = guild.roles.cache.filter(r => 
+                Object.values(notification_roles).includes(r.name)
+            );
+            memberRoles.remove(rolesToRemove);
+            cmd.reply({ content: "All notification roles removed!", ephemeral: true });
+            return;
         }
 
-    }
+        // Add selected roles
+        const roleObjs = selectedValues
+            .map(label => guild.roles.cache.find(r => r.name === notification_roles[label]))
+            .filter(r => r !== undefined);
 
-}
+        // @ts-ignore
+        memberRoles.add(roleObjs);
+        cmd.reply({ content: "Notification roles updated!", ephemeral: true });
+    }
+};
 
 export default EventButton;
