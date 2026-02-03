@@ -15,7 +15,7 @@ const EventButton: DiscordMenu = {
     buildMenu: (channel) => {
         const menu = new StringSelectMenuBuilder()
             .setCustomId("eventbutton")
-            .setPlaceholder("What notifications do you want to be pinged about?")
+            .setPlaceholder("Notications to be pinged about")
             .setMaxValues(Object.keys(notification_roles).length)
             .addOptions(
                 ...Object.keys(notification_roles).map(label => ({
