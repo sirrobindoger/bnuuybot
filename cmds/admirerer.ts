@@ -53,7 +53,7 @@ const Admierer : DiscordCommand = {
 
         cmd.reply({ content: `Okay!! I sent them a message and posted it to #secret-admirer :D I hope they like your message!`, ephemeral: true });
 
-        const channel = await getChannelByName("secret-admirer") as GuildTextBasedChannel;
+        const channel = await getChannelByName("╰「-admirer-」〘♡〙") as GuildTextBasedChannel;
 
         const embedMessage = new EmbedBuilder();
 
