@@ -7,6 +7,7 @@
     },
     "include": [
       "util.ts",
+      "unixteam.ts",
       "bot.ts",
       "events/*.ts",
       "cmds/*.ts",

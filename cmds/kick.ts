@@ -1,11 +1,12 @@
-import { ApplicationCommandOptionType, ApplicationCommandType, GuildMember, PermissionFlagsBits } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js";
 import { DiscordCommand } from "../bot";
+import { moderate } from "../unixteam";
 
 const KickCommand : DiscordCommand = {
     GUILD_ID: process.env.GUILD_ID!,
     COMMAND_INFO: {
         name: "kick",
-        description: "Kicks a member from the server",
+        description: "Kicks a member from the server (unix team, 3 kicks/bans per 24h)",
         type: ApplicationCommandType.ChatInput,
         options: [
             {
@@ -21,28 +22,11 @@ const KickCommand : DiscordCommand = {
                 required: false
             }
         ],
-        defaultMemberPermissions: PermissionFlagsBits.KickMembers
+        // visible to everyone so unix team can use it, permissions are checked in moderate()
+        defaultMemberPermissions: null
     },
 
-    ON_INTERACTION: async (cmd) => {
-        // get the member to kick
-        const member = cmd.options.getMember("user") as GuildMember;
-        const reason = cmd.options.getString("reason") || "No reason provided";
-
-        if (!member) {
-            cmd.reply({ content: "Member not found!", ephemeral: true });
-            return;
-        }
-
-        // DM the member
-        await member.send(`You were kicked from ${member.guild.name} for ${reason}`);
-
-        // kick the member
-        await member.kick(reason);
-
-        // reply to the command
-        cmd.reply({ content: `Kicked ${member} for ${reason}`, ephemeral: false });
-    }
+    ON_INTERACTION: (cmd) => moderate(cmd, "kick")
 }
 
 export default KickCommand;
